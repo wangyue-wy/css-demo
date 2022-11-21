@@ -23,7 +23,7 @@
     </div>
     <div class="num-box">数量：<num-scroll :number="value1"></num-scroll></div>
     <div class="btn">
-      <el-button type="primary" @click="$router.push('/about')">去瀑布流布局</el-button>
+      <el-button type="primary" @click="$router.push('/about')">去瀑布流布局（需要给最外成设置固定高度）</el-button>
     </div>
   </div>
 </template>
