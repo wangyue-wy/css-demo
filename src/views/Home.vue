@@ -1,18 +1,90 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div class="select-box">
+      <el-select v-model="value" placeholder="请选择数字">
+        <el-option
+          v-for="item in options"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value">
+        </el-option>
+      </el-select>
+    </div>
+    <number-scroll :number = value></number-scroll>
+    <div class="select-box">
+      <el-select v-model="value1" placeholder="请选择数字">
+        <el-option
+          v-for="item in options1"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value">
+        </el-option>
+      </el-select>
+    </div>
+    <div class="num-box">数量：<num-scroll :number="value1"></num-scroll></div>
+    <div class="btn">
+      <el-button type="primary" @click="$router.push('/about')">去瀑布流布局</el-button>
+    </div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
 
 export default {
   name: 'Home',
   components: {
-    HelloWorld
+    NumberScroll: () => import('@/components/NumberScroll'),
+    NumScroll: () => import('@/components/NumScroll')
+  },
+  data () {
+    return {
+      options1: [
+        {
+          value: 12345,
+          label: 12345
+        },
+        {
+          value: 9893.239,
+          label: 9893.239
+        },
+        {
+          value: 6739203,
+          label: 6739203
+        }
+      ],
+      options: [
+        {
+          value: 12345,
+          label: 12345
+        },
+        {
+          value: 99999,
+          label: 99999
+        },
+        {
+          value: 6739203,
+          label: 6739203
+        }
+      ],
+      value: 12345,
+      value1: 1233
+    }
   }
 }
 </script>
+
+<style lang="less">
+.select-box {
+  padding: 20px 0 0 20px;
+}
+.num-box {
+  margin-top: 20px;
+  padding-left: 20px;
+  display: flex;
+  align-items: center;
+}
+.btn {
+  margin-top: 20px;
+  text-align: center;
+}
+</style>
