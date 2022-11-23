@@ -21,6 +21,10 @@ const routes = [
   {
     path: '/pubu',
     component: () => import('@/views/pubu.vue')
+  },
+  {
+    path: '/dialog',
+    component: () => import('@/views/dialog.vue')
   }
 ]
 

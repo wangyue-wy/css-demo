@@ -73,7 +73,7 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .select-box {
   padding: 20px 0 0 20px;
 }
@@ -82,9 +82,5 @@ export default {
   padding-left: 20px;
   display: flex;
   align-items: center;
-}
-.btn {
-  margin-top: 20px;
-  text-align: center;
 }
 </style>
