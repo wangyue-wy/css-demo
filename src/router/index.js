@@ -25,6 +25,10 @@ const routes = [
   {
     path: '/dialog',
     component: () => import('@/views/dialog.vue')
+  },
+  {
+    path: '/table',
+    component: () => import('@/views/table.vue')
   }
 ]
 
