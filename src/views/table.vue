@@ -41,32 +41,32 @@ export default {
     return {
       toggleIndex: '1', // 解决动态切换表头时，样式塌陷问题
       radio: '1',
-      selectList: [
+      selectList: Object.freeze([
         { text: '一级表格', value: '1', name: 'tableColum1' },
         { text: '二级表格1', value: '2', name: 'tableColum2' },
         { text: '二级表格2', value: '3', name: 'tableColum3' }
-      ],
+      ]),
       tableColum: [],
-      tableColum1: [
+      tableColum1: Object.freeze([
         { label: '运行台区数', prop: 'a1', click: true, type: 1 },
         { label: '系统赋值成功数', prop: 'a2', click: true, type: 1 },
         { label: '系统赋值失败数', prop: 'a3', click: true, type: 1 },
         { label: '系统赋值率', prop: 'a4', click: true, type: 2 },
         { label: '统计日期', prop: 'a5' }
-      ],
-      tableColum2: [
+      ]),
+      tableColum2: Object.freeze([
         { label: '在运台区总数', prop: 'a1' },
         { label: '系统赋值情况', prop: 'a', child: [{ label: '系统赋值台区数', prop: 'a2', click: true, type: 1 }, { label: '系统不可赋值台区数', prop: 'a3', click: true, type: 1 }, { label: '系统赋值率', prop: 'a4' }] },
         { label: '总赋值情况', prop: 'b', child: [{ label: '系统赋值台区数', prop: 'a5', click: true, type: 1 }, { label: '人工赋值台区数', prop: 'a6', click: true, type: 1 }, { label: '赋值率', prop: 'a7' }] },
         { label: '统计日期', prop: 'a8' },
         { label: '操作', prop: 'a9', click: true, type: 3 }
-      ],
-      tableColum3: [
+      ]),
+      tableColum3: Object.freeze([
         { label: '台区总数', prop: 'a1' },
         { label: '系统赋值准确率情况', prop: 'a', child: [{ label: '赋值准确数', prop: 'a2' }, { label: '赋值准确率', prop: 'a3', click: true, type: 4 }, { label: '赋值不合理数', prop: 'a4', click: true, type: 1 }, { label: '赋值不合理占比', prop: 'a5' }] },
         { label: 'HPLC赋值准确率情况 ', prop: 'b', child: [{ label: 'HPLC台区总数', prop: 'a6' }, { label: 'HPLC赋值准确数', prop: 'a7', click: true, type: 4 }, { label: 'HPLC赋值不合理数', prop: 'a8', click: true, type: 1 }, { label: 'HPLC赋值不合理占比', prop: 'a9' }] },
         { label: '统计日期', prop: 'a10' }
-      ],
+      ]),
       tableData: [{
         a1: '11',
         a2: '22',
