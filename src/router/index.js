@@ -29,6 +29,10 @@ const routes = [
   {
     path: '/table',
     component: () => import('@/views/table.vue')
+  },
+  {
+    path: '/comtable',
+    component: () => import('@/views/comTable.vue')
   }
 ]
 
