@@ -150,6 +150,7 @@ export default {
         }
       })
     },
+    // 将日期的起始时间与结束时间塞到对应的字段里
     setTime (item, time) {
       console.log(time)
       if (Object.prototype.hasOwnProperty.call(item, 'targetModel')) {

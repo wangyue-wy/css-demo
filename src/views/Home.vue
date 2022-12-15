@@ -25,6 +25,20 @@
     <div class="btn">
       <el-button type="primary" @click="$router.push('/about')">去瀑布流布局（需要给最外成设置固定高度）</el-button>
     </div>
+    <div v-for="(item, index) in selectList" :key="index">
+      <div>{{item.title}}</div>
+      <el-checkbox-group v-model="checkList">
+        <el-checkbox v-for="op in item.list" :label="op.value" :key="op.value">{{op.label}}</el-checkbox>
+      </el-checkbox-group>
+    </div>
+    <div class="select">
+      <el-checkbox-group v-model="checkList1"  @change="handleCheckedCitiesChange">
+        <div v-for="(item, index) in selectList" :key="index">
+          <div>{{item.title}}</div>
+          <el-checkbox v-for="op in item.list" :label="op.value" :key="op.value">{{op.label}}</el-checkbox>
+        </div>
+      </el-checkbox-group>
+    </div>
   </div>
 </template>
 
@@ -67,7 +81,48 @@ export default {
         }
       ],
       value: 12345,
-      value1: 1233
+      value1: 1233,
+      selectList: [
+        {
+          title: '选项1',
+          list: [
+            { label: '上海', value: 1 },
+            { label: '北京', value: 2 },
+            { label: '广州', value: 3 }
+          ]
+        },
+        {
+          title: '选项2',
+          list: [
+            { label: '南京', value: 4 },
+            { label: '苏州', value: 5 },
+            { label: '无锡', value: 6 }
+          ]
+        },
+        {
+          title: '选项3',
+          list: [
+            { label: '合肥', value: 7 },
+            { label: '滁州', value: 8 },
+            { label: '芜湖', value: 9 }
+          ]
+        }
+      ],
+      checkList: [],
+      checkList1: []
+    }
+  },
+  watch: {
+    checkList: {
+      handler (val) {
+        console.log(val)
+      },
+      deep: true
+    }
+  },
+  methods: {
+    handleCheckedCitiesChange (value) {
+      console.log(value)
     }
   }
 }
@@ -82,5 +137,11 @@ export default {
   padding-left: 20px;
   display: flex;
   align-items: center;
+}
+.select {
+  padding-top: 30px;
+  >div {
+    font-size: 14px;
+  }
 }
 </style>

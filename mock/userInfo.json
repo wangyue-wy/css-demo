@@ -1,0 +1,10 @@
+{
+  "code": 200,
+  "data": {
+    "id": "@id()",
+    "username": "@cname()",
+    "date": "@date()"
+  },
+  "msg": "success",
+  "status": true
+}

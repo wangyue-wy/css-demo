@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   components: {
     TableSearch: () => import('@/components/Form/TableSearch')
@@ -144,6 +145,9 @@ export default {
     },
     tableSearch (form) {
       console.log(form)
+      axios.post('/user/userInfo', {}).then(res => {
+        console.log(res)
+      })
     }
   }
 }
