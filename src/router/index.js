@@ -41,6 +41,10 @@ const routes = [
   {
     path: '/map2',
     component: () => import('@/views/map2.vue')
+  },
+  {
+    path: '/pageExcel',
+    component: () => import('@/views/pageExcel.vue')
   }
 ]
 

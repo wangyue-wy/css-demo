@@ -1,14 +1,40 @@
 <template>
   <div class="box">
     <table-search :searchData="searchData" @changeType="changeType" @tableSearch="tableSearch" ></table-search>
+    <table-data :selectIndexP.sync="selectIndexP" border @tableSearch="tableSearch" :tableData.sync="tableData" ref="tableData">
+      <template #tableColumn>
+        <el-table-column
+          align="center"
+          type="index"
+          label="序号"
+          width="100">
+        </el-table-column>
+        <template v-for="(item, index) in tableColum">
+          <el-table-column :key="index" :label="item.label" :prop="item.prop" align="center">
+            <template slot-scope="scope">
+              <div class="table-click" v-if="item.hasOwnProperty('click')" @click="tableClick(scope.row, item.type)">{{scope.row[item.prop]}}</div>
+              <div v-else>{{scope.row[item.prop]}}</div>
+            </template>
+            <template v-if="item.hasOwnProperty('child')">
+              <el-table-column v-for="(ele, id) in item.child" :key="id" :label="ele.label" :prop="ele.prop" align="center">
+                <template slot-scope="scope">
+                  <div class="table-click" v-if="ele.hasOwnProperty('click')" @click="tableClick(scope.row, ele.type)">{{scope.row[ele.prop]}}</div>
+                  <div v-else>{{scope.row[ele.prop]}}</div>
+                </template>
+              </el-table-column>
+            </template>
+          </el-table-column>
+        </template>
+      </template>
+    </table-data>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
 export default {
   components: {
-    TableSearch: () => import('@/components/Form/TableSearch')
+    TableSearch: () => import('@/components/Form/TableSearch'),
+    TableData: () => import('@/components/Form/TableData')
   },
   data () {
     return {
@@ -125,7 +151,51 @@ export default {
           lg: 8,
           xl: 6
         }
-      ]
+      ],
+      selectIndexP: 0,
+      tableColum: [],
+      allTable: [
+        {
+          index: 0,
+          detail: [
+            { label: '运行台区数', prop: 'a1', click: true, type: 1 },
+            { label: '系统赋值成功数', prop: 'a2', click: true, type: 1 },
+            { label: '系统赋值失败数', prop: 'a3', click: true, type: 1 },
+            { label: '系统赋值率', prop: 'a4', click: true, type: 2 },
+            { label: '统计日期', prop: 'a5' }
+          ]
+        },
+        {
+          index: 1,
+          detail: [
+            { label: '在运台区总数', prop: 'a1' },
+            { label: '系统赋值情况', prop: 'a', child: [{ label: '系统赋值台区数', prop: 'a2', click: true, type: 1 }, { label: '系统不可赋值台区数', prop: 'a3', click: true, type: 1 }, { label: '系统赋值率', prop: 'a4' }] },
+            { label: '总赋值情况', prop: 'b', child: [{ label: '系统赋值台区数', prop: 'a5', click: true, type: 1 }, { label: '人工赋值台区数', prop: 'a6', click: true, type: 1 }, { label: '赋值率', prop: 'a7' }] },
+            { label: '统计日期', prop: 'a8' },
+            { label: '操作', prop: 'a9', click: true, type: 3 }
+          ]
+        },
+        {
+          index: 2,
+          detail: [
+            { label: '台区总数', prop: 'a1' },
+            { label: '系统赋值准确率情况', prop: 'a', child: [{ label: '赋值准确数', prop: 'a2' }, { label: '赋值准确率', prop: 'a3', click: true, type: 4 }, { label: '赋值不合理数', prop: 'a4', click: true, type: 1 }, { label: '赋值不合理占比', prop: 'a5' }] },
+            { label: 'HPLC赋值准确率情况 ', prop: 'b', child: [{ label: 'HPLC台区总数', prop: 'a6' }, { label: 'HPLC赋值准确数', prop: 'a7', click: true, type: 4 }, { label: 'HPLC赋值不合理数', prop: 'a8', click: true, type: 1 }, { label: 'HPLC赋值不合理占比', prop: 'a9' }] },
+            { label: '统计日期', prop: 'a10' }
+          ]
+        }
+      ],
+      searchParams: {}, // 表单数据
+      pageInfos: {}, // 分页参数
+      tableData: []
+    }
+  },
+  watch: {
+    selectIndexP: {
+      immediate: true,
+      handler (val) {
+        this.tableColum = this.allTable.find(v => v.index === val)?.detail
+      }
     }
   },
   methods: {
@@ -143,10 +213,19 @@ export default {
       }
       // console.log()
     },
-    tableSearch (form) {
-      console.log(form)
-      axios.post('/user/userInfo', {}).then(res => {
-        console.log(res)
+    tableSearch () {
+      let params = {
+        ...this.searchParams,
+        ...this.pageInfos
+      }
+      this.getData(params)
+      
+    },
+    getData (params) {
+      this.$post('/user/userInfo', params).then(res => {
+        this.tableData = res.data.list
+        console.log(this.$refs.tableData.pagination)
+        this.$refs.tableData.pagination.total = +res.data.total
       })
     }
   }
@@ -155,6 +234,10 @@ export default {
 
 <style lang='less' scoped>
 .box {
-  padding-top: 20px;
+  padding: 20px;
+}
+.table-click {
+  cursor: pointer;
+  color: #87b991;
 }
 </style>

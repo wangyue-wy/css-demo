@@ -110,6 +110,10 @@ export default {
   },
   created () {
     this.setDataRules()
+    // 在空实例$bus注册validate方法
+    this.$bus.$on('validate', (val) => {
+      this.setParams()
+    })
   },
   methods: {
     change (item) {
@@ -146,7 +150,9 @@ export default {
     setParams () {
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
-          this.$emit('tableSearch', this.ruleForm)
+          // this.$emit('tableSearch', this.ruleForm)
+          this.$parent.searchParams = this.ruleForm
+          this.$emit('tableSearch')
         }
       })
     },

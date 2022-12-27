@@ -13,8 +13,10 @@
     "axios": "^1.2.1",
     "core-js": "^3.6.5",
     "element-ui": "^2.15.12",
+    "file-saver": "^2.0.5",
     "vue": "^2.6.11",
-    "vue-router": "^3.2.0"
+    "vue-router": "^3.2.0",
+    "xlsx": "^0.17.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.4.6",
@@ -23,6 +25,7 @@
     "@vue/cli-service": "~4.4.6",
     "@vue/eslint-config-standard": "^5.1.2",
     "babel-eslint": "^10.1.0",
+    "compression-webpack-plugin": "^10.0.0",
     "eslint": "^6.7.2",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-node": "^11.1.0",

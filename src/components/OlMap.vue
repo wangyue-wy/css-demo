@@ -1,6 +1,7 @@
 <template>
   <div class="map-box">
     <div id="map" style="height: 100%"></div>
+    <!-- 弹窗信息展示 -->
     <ul id="popup" class="ol-popup">
       <li v-for="(item, index) in cityPopList" :key="index">{{item.name}}：{{item.value}}</li>
     </ul>
@@ -19,10 +20,10 @@ import { transform } from 'ol/proj' // 将坐标从源投影转换为目标投�
 import { toStringHDMS } from 'ol/coordinate'
 import { Vector as VectorSource } from 'ol/source' // 数据源
 import { Vector as VectorLayer } from 'ol/layer' // 视图层
-import { Point } from 'ol/geom' // 用于添加图标的位置
+import { Point, LineString, Polygon, Circle } from 'ol/geom' // 用于添加图标的位置
 import { Style, Icon, Stroke, Fill, Text } from 'ol/style' // 修改样式和icon
 import { defaults } from 'ol/control' // 设置控件参数
-import GeoJSON from 'ol/format/GeoJSON'
+import GeoJSON from 'ol/format/GeoJSON' 
 import anhuiJson from '@/assets/anhui.json'
 import hefeiJson from '@/assets/hefei.json'
 import chuzhouJson from '@/assets/chuzhou.json'
@@ -105,12 +106,13 @@ export default {
         // 设置地图控件
         controls: defaults({
           zoom: false, // 不显示放大放小按钮；
-          rotate: false, // 不显示指北针控件；
+          rotate: true, // 不显示指北针控件；
           attribution: false // 不显示右下角的地图信息控件
         }).extend([])
       })
       this.mapEvent()
-      this.setIcon()
+      // this.setIcon()
+      // this.addFe()
     },
     // 点击城市下钻
     drillDown (fe) {
@@ -162,6 +164,66 @@ export default {
       })
       this.setBgf(anhuiJson)
     },
+    // 添加点，线，面
+    addFe () {
+      // 创建点
+      const point = new Feature({
+        geometry: new Point([13293883.899189748, 3791595.314230861]),
+        id: 'point'
+      })
+      // 创建线
+      const arr = [
+        [13293883.899189748, 3791595.314230861],
+        [13374601.401058894, 3943246.378348651]
+      ]
+      const line = new Feature({
+        geometry: new LineString(arr),
+        id: 'line'
+      })
+      // 创建多边形
+      const arr1 = [
+        [
+          [13458987.880285729, 3764689.4802744794],
+          [13353810.529365325, 3742675.6161283487],
+          [13521360.495366432, 3666850.0840694536],
+          [13458987.880285729, 3764689.4802744794]
+        ]
+      ]
+      const polygon = new Feature({
+        geometry: new Polygon(arr1),
+        id: 'polygon'
+      })
+       let lineStyle = new Style({
+          fill: new Fill({
+              color: 'rgba(1, 210, 241, 0.2)'
+          }),
+          stroke: new Stroke({
+              color: 'rgba(255, 0, 0)',
+              width: 4,
+          }),
+      });
+      polygon.setStyle(lineStyle)
+      // 创建圆
+      const circle = new Feature({
+        geometry: new Circle([13380716.363321707, 3534766.8991926694], 0.5),
+        id: 'circle'
+      })
+      circle.setStyle(new Style({
+        fill: new Fill({ // 填充
+        color: 'rgba(255, 255, 255, 0.6)'
+      }),
+      stroke: new Stroke({ // 边框
+        color: '#319FD3',
+        width: 20
+      })
+      }))
+      const vectorLayer = new VectorLayer({
+        source: new VectorSource({
+          features: [point, line, polygon, circle]
+        })
+      })
+      this.olMap.addLayer(vectorLayer)
+    },
     // 在特定位置添加图片
     setIcon () {
       const iconImg = 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png' // 图片地址
@@ -204,8 +266,11 @@ export default {
       // console.lpg(this.olMap.layers.getSource())
     },
     // 给特定区域加上背景
+    /**
+     * @param region 特定区域的Geojson数据
+    **/
     setBgf (region) {
-      const features = new GeoJSON({ featureProjection: 'EPSG:3857' }).readFeatures(region)
+      const features = new GeoJSON({ featureProjection: 'EPSG:3857' }).readFeatures(region) // 读取Geojson格式数据
       const source = new VectorSource({
         features
       })
