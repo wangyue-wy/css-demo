@@ -39,6 +39,9 @@
         </div>
       </el-checkbox-group>
     </div>
+    <div class="btn">
+      <el-button type="primary" @click="nodeGet(1)">调用本地node写的接口</el-button>
+    </div>
   </div>
 </template>
 
@@ -123,6 +126,19 @@ export default {
   methods: {
     handleCheckedCitiesChange (value) {
       console.log(value)
+    },
+    nodeGet (type) {
+      // type 1: get请求 2：post请求
+      if (+type === 1) {
+        this.$get('/del_user', {id: 1}).then(res => {
+          console.log(res)
+        })
+      }
+      if (+type === 2) {
+        this.$post('/user/post', {post: 1}).then(res => {
+          console.log(res)
+        })
+      }
     }
   }
 }

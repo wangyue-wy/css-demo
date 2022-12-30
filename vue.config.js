@@ -19,7 +19,7 @@ module.exports = {
   devServer: {
     open: false, // 默认false   true自动浏览器打开localhost
     // before表示在devServer中的配置先经过before的操作
-    before: require("./mock/mockServe.js") //引入mock.js
+    before: require("./mock/mockServe.js"), //引入mock.js
     // proxy: {
     //   [process.env.VUE_APP_BASE_API]: {
     //     target: process.env.VUE_APP_BASE_PROXY_API,
@@ -29,6 +29,15 @@ module.exports = {
     //     }
     //   }
     // }
+    proxy: {
+      '/dealerWebApi': {
+        target: 'http://127.0.0.1:8081',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/dealerWebApi': 'http://127.0.0.1:8081'
+        }
+      }
+    }
   },
   configureWebpack: config => {
     config.externals = {

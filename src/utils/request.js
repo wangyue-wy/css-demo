@@ -8,11 +8,10 @@ import SetLoading from './axiosLoading'
 import { Promise } from 'core-js'
 // import { resolve } from 'core-js/fn/promise'
 
-// axios.defaults.baseURL = process.env.VUE_APP_BASE_API  // axios请求地址
+axios.defaults.baseURL = process.env.VUE_APP_BASE_API  // axios请求地址
 const $loading = new SetLoading() // 使用封装的打开与关闭弹窗方法
 const configs = { 
-  // baseURL: process.env.VUE_APP_BASE_API || ""
-  baseURL: ""
+  baseURL: process.env.VUE_APP_BASE_API || ""
   // timeout: 60 * 1000, // Timeout 请求超时时间
   // withCredentials: true, // Check cross-site Access-Control
   // method: 'post' // 默认请求方式
@@ -128,8 +127,9 @@ const $post = (url, data, config, axiosConfig = {}) => {
 const $get = (url, params, config) => {
   return new Promise((resolve, reject) => {
     $loading.open()
-    const _url = (config && config.default) ? url : `ec.yasuo/api/v1/${url}` // 后台本地的服务
-    $axios.get(_url, {
+    // const _url = (config && config.default) ? url : `ec.yasuo/api/v1/${url}` // 后台本地的服务
+    const _url = url
+    _axios.get(_url, {
       params
     }).then(data => {
       responesMessage(data, config, resolve, reject)
@@ -138,7 +138,9 @@ const $get = (url, params, config) => {
         alertMessage(config, reject, error)
       })
       .finally(() => {
-        $loading.close(config)
+        setTimeout(() => {
+          $loading.close(config)
+        },500)
       })
   })
 }
